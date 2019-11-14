@@ -1,0 +1,26 @@
+# This advances the start and end dates in the URL so you don't have to manually
+# Based on code from Aaron Kite-Powell (CDC)
+# By default it will set the start date to 7 days ago and the end date to today, but you can change those to custom settings when you call the function
+# If you do not specify when you call the function, it will use the default settings
+# Example: set_dates(url = url, start = "2019-08-01")
+
+# start = new start date
+# end = new end date
+
+set_dates <- function(url, start = (Sys.Date()-7), end = Sys.Date()) {
+  end_date <- regmatches(url, regexpr('endDate=.+?&', url))
+  end_date2 <- as.Date(str_extract(end_date, "[0-9]{1,2}[A-Z|a-z]{3}[0-9]{4}"),"%e%b%Y")
+  new_end <- end
+  new_end_date <- format(new_end, "%e%b%Y")
+  old_end_date <- str_trim(format(end_date2, "%e%b%Y" ))
+  url <- gsub("[[:space:]]", "", str_replace(url, old_end_date, new_end_date))
+  
+  start_date <- regmatches(url, regexpr('startDate=.+?&', url))
+  start_date2 <- as.Date(str_extract(start_date, "[0-9]{1,2}[A-Z|a-z]{3}[0-9]{4}"),"%e%b%Y")
+  new_start <- start
+  new_start_date <- format(new_start, "%e%b%Y")
+  old_start_date <- str_trim(format(start_date2, "%e%b%Y" ))
+  url <- gsub("[[:space:]]", "", str_replace(url, old_start_date, new_start_date))
+  
+  return(url)
+}
