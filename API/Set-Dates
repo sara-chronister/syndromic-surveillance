@@ -8,19 +8,15 @@
 # end = new end date
 
 set_dates <- function(url, start = (Sys.Date()-7), end = Sys.Date()) {
-  end_date <- regmatches(url, regexpr('endDate=.+?&', url))
-  end_date2 <- as.Date(str_extract(end_date, "[0-9]{1,2}[A-Z|a-z]{3}[0-9]{4}"),"%e%b%Y")
+  end_date <- regmatches(url, regexpr('endDate=.+?&', url)) %>% str_replace(.,"endDate=","") %>% str_replace(.,"&","")
   new_end <- as.Date(end)
   new_end_date <- format(new_end, "%e%b%Y")
-  old_end_date <- str_trim(format(end_date2, "%e%b%Y" ))
-  url <- gsub("[[:space:]]", "", str_replace(url, old_end_date, new_end_date))
-  
-  start_date <- regmatches(url, regexpr('startDate=.+?&', url))
-  start_date2 <- as.Date(str_extract(start_date, "[0-9]{1,2}[A-Z|a-z]{3}[0-9]{4}"),"%e%b%Y")
+  url <- gsub("[[:space:]]", "", str_replace(url, end_date, new_end_date))
+
+  start_date <- regmatches(url, regexpr('startDate=.+?&', url)) %>% str_replace(.,"startDate=","") %>% str_replace(.,"&","")
   new_start <- as.Date(start)
-  new_start_date <- format(new_start, "%e%b%Y")
-  old_start_date <- str_trim(format(start_date2, "%e%b%Y" ))
-  url <- gsub("[[:space:]]", "", str_replace(url, old_start_date, new_start_date))
+  new_start_date <- str_trim(format(new_start, "%e%b%Y"))
+  url <- gsub("[[:space:]]", "", str_replace(url, start_date, new_start_date))
   
   return(url)
 }
