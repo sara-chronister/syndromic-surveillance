@@ -6,5 +6,6 @@ get_csv <- function(url) {
   api_response <- GET(url, authenticate(key_list("essence")[1,2],
                                         key_get("essence",key_list("essence")[1,2])))
   data_details <- content(api_response, type="text/csv")
+  rm(api_response)
   return(data_details)
 }
