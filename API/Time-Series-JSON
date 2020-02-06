@@ -8,5 +8,6 @@ get_ts_json <- function(url) {
   timeseries_data <- api_data$timeSeriesData 
   timeseries_data <- timeseries_data %>% select(-altText, -details) %>%
     mutate(date = as.Date(date))
+  rm(api_response)
   return(timeseries_data)
 }
