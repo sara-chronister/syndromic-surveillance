@@ -7,7 +7,7 @@
 # loop_start: the start date for your query
 # loop_end: the end date for your query
 
-return_longterm_query <- function(loop_start, loop_end, by = 14) {
+return_longterm_query <- function(url, loop_start, loop_end, by = 14) {
   
   #### Setup for loop ####
   # function to create a data frame with the start and end dates you are trying to use 
@@ -25,10 +25,10 @@ return_longterm_query <- function(loop_start, loop_end, by = 14) {
 
   #### Loop over multiple time frames ####
   # loop to change the dates, get csv from url, and store output in a list
-  for (i in 1:nrow(dates)) {
+  for (i in 1:nrow(loop_dates)) {
     
     # update the to the i set of start and end dates in the url
-    url_update <- set_dates(url, start = dates$start[i], end = dates$end[i])
+    url_update <- set_dates(url, start = loop_dates$start[i], end = loop_dates$end[i])
     # generate the output from the i set of start and end dates
     new_output <- get_csv(url = url_update) %>%
       mutate_all(as.character)
