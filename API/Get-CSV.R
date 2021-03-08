@@ -5,8 +5,8 @@
 get_csv <- function(url) {
   api_response <- GET(url, authenticate(key_list("essence")[1,2],
                                         key_get("essence",key_list("essence")[1,2])))
-  if (api_response$status_code==400|api_response$status_code==401|api_response$status_code==403) {
-    warning("API Status Code 400: ESSENCE password has expired. Please go to amc.syndromicsurveillance.org to reset.")
+  if (api_response$status_code==401) {
+    warning("API Status Code 401: ESSENCE password has expired. Please go to amc.syndromicsurveillance.org to reset.")
   } else {
     if (api_response$status_code==404) {
       warning("API Status Code 404: Check the ESSENCE API for errors. If necessary, re-copy the API from ESSENCE to ensure it is formatted correctly.")
